@@ -4,20 +4,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+
+import javax.sql.DataSource;
 
 
 @SpringBootApplication //(exclude = SecurityAutoConfiguration.class)
 public class ResolutionsApplication {
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                org.springframework.security.core.userdetails.User
-                        .withUsername("user")
-                        .password("$2a$04$6Cuo9RIa1tOGrD.WsgCxGuCLoOfqChCg0dq0JVYh3R1hMgRWjgTnu")
-                        .authorities("resolution:read")
-                        .build());
+    UserDetailsService userDetailsService(DataSource dataSource) {
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     public static void main(String[] args) {
