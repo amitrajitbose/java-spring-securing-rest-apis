@@ -7,9 +7,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-
-import javax.sql.DataSource;
 
 
 @SpringBootApplication //(exclude = SecurityAutoConfiguration.class)
@@ -17,17 +14,16 @@ public class ResolutionsApplication extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests(authz -> authz
-                        .mvcMatchers(HttpMethod.GET, "/resolutions", "/resolution/**").hasAuthority("resolution:read")
-                        .anyRequest().hasAuthority("resolution:write"))
+        http.authorizeRequests(authz -> authz
+                .mvcMatchers(HttpMethod.GET, "/resolutions", "/resolution/**").hasAuthority("resolution:read")
+                .anyRequest().hasAuthority("resolution:write"))
                 .httpBasic(basic -> {
                 });
     }
 
     @Bean
-    UserDetailsService userDetailsService(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
+    UserDetailsService userDetailsService(UserRepository userRepository) {
+        return new UserRepositoryUserDetailsService(userRepository);
     }
 
     public static void main(String[] args) {
