@@ -77,4 +77,12 @@ public class User implements Serializable {
     public void grantAuthority(String authority) {
         this.userAuthorities.add(new UserAuthority(this, authority));
     }
+
+    public User(User user) {
+        this.id = user.id;
+        this.username = user.username;
+        this.password = user.password;
+        this.enabled = user.enabled;
+        this.userAuthorities = user.userAuthorities;
+    }
 }
