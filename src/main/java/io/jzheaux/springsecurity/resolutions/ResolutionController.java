@@ -51,4 +51,7 @@ public class ResolutionController {
 		this.resolutions.complete(id);
 		return read(id);
 	}
+
+	@GetMapping("/health")
+	public String healthCheck(){return "App Working Successfully";}
 }
