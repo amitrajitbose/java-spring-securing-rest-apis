@@ -53,5 +53,5 @@ public class ResolutionController {
 	}
 
 	@GetMapping("/health")
-	public String healthCheck(){return "App Working Successfully";}
+	public String healthCheck(){return "App Working Successfully.";}
 }
