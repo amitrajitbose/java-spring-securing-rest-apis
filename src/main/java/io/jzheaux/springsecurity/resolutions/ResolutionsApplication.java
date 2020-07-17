@@ -4,11 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @SpringBootApplication //(exclude = SecurityAutoConfiguration.class)
 public class ResolutionsApplication extends WebSecurityConfigurerAdapter {
 
@@ -16,8 +17,7 @@ public class ResolutionsApplication extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests(authz -> authz
                 .mvcMatchers("/health**").permitAll()
-                .mvcMatchers(HttpMethod.GET, "/resolutions", "/resolution/**").hasAuthority("resolution:read")
-                .anyRequest().hasAuthority("resolution:write"))
+                .anyRequest().authenticated())
                 .httpBasic(basic -> {
                 });
     }
